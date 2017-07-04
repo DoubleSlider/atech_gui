@@ -36,6 +36,7 @@ class Mainframe(tk.Tk):
 
     def change(self, frame):
         self.frame.pack_forget() # delete currrent frame
+      
         self.frame = frame(self)
         self.frame.pack() # make new frame
 
@@ -48,24 +49,11 @@ class FirstFrame(tk.Frame):
         master.title("Main frame")
         master.geometry("800x600")
         
+        #self.inputField = tk.Entry(self)
+        #self.inputField.grid(row=0, column=1, columnspan=6)
+
+        self.grid()
         self.sel0 = -1 # a initial value
-
-        self.lb1 = tk.Label(self,text="Servo: not nonnect")
-        self.lb1.grid(row=0,column=1,columnspan=10)#, sticky=tk.W)
-
-
-
-        self.lb2 = tk.Label(self,text="請選擇機型")
-        self.lb2.grid(row=1)
-
-        btn=tk.Button(self,text="Run momma",command=self.RunButton)
-        btn.grid(row=2)
-
-        self.listbox = tk.Listbox(self)
-        self.listbox.grid(row=3)
-
-        #tk.e
-        #listbox.insert(tk.END, "a list entry")
 
         path = red_light_img_path
         img0 = Image.open(path)
@@ -80,17 +68,43 @@ class FirstFrame(tk.Frame):
         panel.image = img # keep a reference, why???
         #print(panel)
         #The Pack geometry manager packs widgets in rows or columns.
-        panel.grid(row=0,column=0,sticky=tk.W)#, padx=30, pady=30)#side = "bottom", fill = "both", expand = "yes")
+        panel.grid(row=0,column=0,sticky=tk.W)#, padx=30, pady=30)#side = "bottom", fill = "both", expand = "yes")        
+        
+        self.lb1 = tk.Label(self,text="Servo: not nonnect")
+        self.lb1.grid(row=0,column=1,rowspan=1,columnspan=1, sticky=tk.W)
 
-        self.textarea = tk.Text(self,width=50,height=20)
+
+
+        self.lb2 = tk.Label(self,text="請選擇機型")
+        self.lb2.grid(row=1,column=0,columnspan=2,sticky=tk.W)
+
+
+
+        self.listbox = tk.Listbox(self)
+        self.listbox.grid(row=2,column=0,columnspan=2,sticky=tk.W)
+
+        #tk.e
+        #listbox.insert(tk.END, "a list entry")
+
+
+
+        self.textarea = tk.Text(self,width=20,height=10)
         #self.recipe = recipe
         self.recipe = glob.glob("*.csv")
         for item in self.recipe:
             self.listbox.insert(tk.END, item)       
 
-        self.textarea.grid(row=4)
+        self.textarea.grid(row=4,column=0,rowspan=1,columnspan=6, sticky=tk.W)
+        
+        btn=tk.Button(self,text="下一步",command=self.RunButton)
+        btn.grid(row=16,column=0,sticky=tk.W)
+        
+        btn2 = tk.Button(self, text="Servo on",command=self.hello)
+        btn2.grid(row=17,column=0,sticky=tk.W)
+        
         self.poll()
-
+    def hello(self):
+        print("hello")
     def poll(self):
         self.lb2.after(200, self.poll)
         sel = None
@@ -121,6 +135,7 @@ class SecondFrame(tk.Frame):
         tk.Frame.__init__(self, master, **kwargs)
         master.title("otherFrame")
         master.geometry("800x600")
+        self.grid()
         self.var = tk.StringVar(self)
         lbl = tk.Label(self, textvariable=self.var)
         lbl.pack(anchor='w')
